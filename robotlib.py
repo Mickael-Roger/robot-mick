@@ -86,11 +86,12 @@ class SerialArduino:
 
     def __init__(self):
         self.pattern = re.compile("\d+;\d+;\d+")
+        self.ser = serial.Serial('/dev/serial0', 9600, timeout=1)
 
     def readline(self):
-        ser = serial.Serial('/dev/serial0', 9600, timeout=1)
+        self.ser.reset_input_buffer()
         msg = ""
         while not self.pattern.search(msg):
-            msg = str(ser.readline())
+            msg = str(self.ser.readline())
         print(msg)
         del ser
