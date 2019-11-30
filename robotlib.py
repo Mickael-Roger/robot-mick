@@ -102,5 +102,4 @@ class SerialArduino:
                 self.middle = int(m) - 3
                 self.left = int(l)
                 self.right = int (r)
-                print("Middle ", m, " left ", l, " right ", r)
 
