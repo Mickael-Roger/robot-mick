@@ -88,9 +88,12 @@ class SerialArduino:
         self.pattern = re.compile("\d+;\d+;\d+")
         self.ser = serial.Serial('/dev/serial0', 9600, timeout=1)
 
-    def readline(self):
+    def obstacle(self):
         self.ser.reset_input_buffer()
-        msg = ""
-        while not self.pattern.search(msg):
+        while True:
             msg = str(self.ser.readline())
-        print(msg)
+            position = self.pattern.search(msg)
+            if position:
+                print(msg[position.start():position.end()])
+
+
