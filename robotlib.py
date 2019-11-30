@@ -1,0 +1,78 @@
+import RPi.GPIO as GPIO
+from time import sleep, time
+
+
+class Robot:
+
+    # L298N to Raspberry GPIO ports
+    in1 = 13
+    in2 = 15
+    ena = 11
+    in3 = 24
+    in4 = 26
+    enb = 22
+
+    def __del__(self):
+        GPIO.cleanup()
+
+
+    def stop():
+        GPIO.output(self.in1,GPIO.LOW)
+        GPIO.output(self.in3,GPIO.LOW)
+        GPIO.output(self.in2,GPIO.LOW)
+        GPIO.output(self.in4,GPIO.LOW)
+
+    def __init__():
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(self.in1,GPIO.OUT)
+        GPIO.setup(self.in3,GPIO.OUT)
+        GPIO.setup(self.in2,GPIO.OUT)
+        GPIO.setup(self.in4,GPIO.OUT)
+        GPIO.setup(self.ena,GPIO.OUT)
+        GPIO.setup(self.enb,GPIO.OUT)
+        GPIO.output(self.in1,GPIO.LOW)
+        GPIO.output(self.in3,GPIO.LOW)
+        GPIO.output(self.in2,GPIO.LOW)
+        GPIO.output(self.in4,GPIO.LOW)
+
+        self.p=GPIO.PWM(ena,1000)
+        self.q=GPIO.PWM(enb,1000)
+        self.p.start(25)
+        self.q.start(25)
+
+        self.p.ChangeDutyCycle(100)
+        self.q.ChangeDutyCycle(100)
+    
+    
+    def avance(nb):
+        GPIO.output(in3,GPIO.HIGH)
+        GPIO.output(in4,GPIO.LOW)
+        GPIO.output(in1,GPIO.HIGH)
+        GPIO.output(in2,GPIO.LOW)
+        sleep(0.1 * nb)
+        stop()
+
+    def recule(nb):
+
+        GPIO.output(in3,GPIO.LOW)
+        GPIO.output(in4,GPIO.HIGH)
+        GPIO.output(in1,GPIO.LOW)
+        GPIO.output(in2,GPIO.HIGH)
+        sleep(0.1 * nb)
+        stop()
+        
+    def droite(nb):
+        GPIO.output(in3,GPIO.LOW)
+        GPIO.output(in4,GPIO.HIGH)
+        GPIO.output(in1,GPIO.HIGH)
+        GPIO.output(in2,GPIO.LOW)
+        sleep(0.0085 * nb)
+        stop()
+
+    def gauche(nb):
+        GPIO.output(in3,GPIO.HIGH)
+        GPIO.output(in4,GPIO.LOW)
+        GPIO.output(in1,GPIO.LOW)
+        GPIO.output(in2,GPIO.HIGH)
+        sleep(0.0085 * nb)
+        stop()    
