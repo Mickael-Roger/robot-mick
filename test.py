@@ -22,10 +22,6 @@ def stop():
 
 def start():
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(IRdevantdroit, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.setup(IRdevantgauche, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.setup(IRderrieredroit, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.setup(IRderrieregauche, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(in1,GPIO.OUT)
     GPIO.setup(in3,GPIO.OUT)
     GPIO.setup(in2,GPIO.OUT)
