@@ -16,13 +16,13 @@ class Robot:
         GPIO.cleanup()
 
 
-    def stop():
+    def stop(self):
         GPIO.output(self.in1,GPIO.LOW)
         GPIO.output(self.in3,GPIO.LOW)
         GPIO.output(self.in2,GPIO.LOW)
         GPIO.output(self.in4,GPIO.LOW)
 
-    def __init__():
+    def __init__(self):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.in1,GPIO.OUT)
         GPIO.setup(self.in3,GPIO.OUT)
@@ -44,7 +44,7 @@ class Robot:
         self.q.ChangeDutyCycle(100)
     
     
-    def avance(nb):
+    def avance(self, nb):
         GPIO.output(in3,GPIO.HIGH)
         GPIO.output(in4,GPIO.LOW)
         GPIO.output(in1,GPIO.HIGH)
@@ -52,7 +52,7 @@ class Robot:
         sleep(0.1 * nb)
         stop()
 
-    def recule(nb):
+    def recule(self, nb):
 
         GPIO.output(in3,GPIO.LOW)
         GPIO.output(in4,GPIO.HIGH)
@@ -61,7 +61,7 @@ class Robot:
         sleep(0.1 * nb)
         stop()
         
-    def droite(nb):
+    def droite(self, nb):
         GPIO.output(in3,GPIO.LOW)
         GPIO.output(in4,GPIO.HIGH)
         GPIO.output(in1,GPIO.HIGH)
@@ -69,7 +69,7 @@ class Robot:
         sleep(0.0085 * nb)
         stop()
 
-    def gauche(nb):
+    def gauche(self, nb):
         GPIO.output(in3,GPIO.HIGH)
         GPIO.output(in4,GPIO.LOW)
         GPIO.output(in1,GPIO.LOW)
