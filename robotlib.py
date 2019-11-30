@@ -90,6 +90,7 @@ class SerialArduino:
 
     def readline(self):
         msg = ""
-        while not self.pattern.match(str(msg)):
-            msg = self.ser.readline()
+        while not self.pattern.match(msg):
+            msg = str(self.ser.readline())
+            print(msg)
         print(msg)
