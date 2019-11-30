@@ -43,7 +43,16 @@ def avance(nb):
     sleep(0.1 * nb)
 
     stop()
-    
+
+def recule(nb):
+
+    GPIO.output(in3,GPIO.LOW)
+    GPIO.output(in4,GPIO.HIGH)
+    GPIO.output(in1,GPIO.LOW)
+    GPIO.output(in2,GPIO.HIGH)
+    sleep(0.1 * nb)
+
+    stop()
     
     
 start()
@@ -56,5 +65,6 @@ q.start(25)
 p.ChangeDutyCycle(100)
 q.ChangeDutyCycle(100)
 
-avance(3)
+avance(30)
+recule(50)
 fin()
