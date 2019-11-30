@@ -28,7 +28,7 @@ class Thread_Avance(threading.Thread):
             if dist.middle < 20 or dist.left < 20 or dist.right < 20:
                 robot.recule(2)
                 if dist.left > dist.right:
-                    robot.left(30)
+                    robot.gauche(30)
                 if dist.right > dist.left:
                     robot.droite(30)
 
