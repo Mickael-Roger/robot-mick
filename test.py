@@ -24,7 +24,6 @@ class Thread_Avance(threading.Thread):
         global robot
         while stop == 0:
             robot.avance(1)
-            print("Middle ", dist.middle, " left ", dist.left, " right ", dist.right)
             if dist.middle < 20 or dist.left < 20 or dist.right < 20:
                 if (dist.left < 25 and dist.right < 25):
                     robot.droite(60) # Mur
