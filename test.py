@@ -10,7 +10,7 @@ dist = SerialArduino()
 #    dist.readline()
 
 dist.readline()
-robot.avance(30)
+#robot.avance(30)
 for i in range(1,50):
     dist.readline()
-    time.sleep(0.300)
+    time.sleep(0.100)
