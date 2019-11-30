@@ -50,7 +50,7 @@ class Robot:
         GPIO.output(self.in1,GPIO.HIGH)
         GPIO.output(self.in2,GPIO.LOW)
         sleep(0.1 * nb)
-        stop()
+        self.stop()
 
     def recule(self, nb):
 
@@ -59,7 +59,7 @@ class Robot:
         GPIO.output(self.in1,GPIO.LOW)
         GPIO.output(self.in2,GPIO.HIGH)
         sleep(0.1 * nb)
-        stop()
+        self.stop()
         
     def droite(self, nb):
         GPIO.output(self.in3,GPIO.LOW)
@@ -67,7 +67,7 @@ class Robot:
         GPIO.output(self.in1,GPIO.HIGH)
         GPIO.output(self.in2,GPIO.LOW)
         sleep(0.0085 * nb)
-        stop()
+        self.stop()
 
     def gauche(self, nb):
         GPIO.output(self.in3,GPIO.HIGH)
@@ -75,4 +75,4 @@ class Robot:
         GPIO.output(self.in1,GPIO.LOW)
         GPIO.output(self.in2,GPIO.HIGH)
         sleep(0.0085 * nb)
-        stop()    
+        self.stop()    
