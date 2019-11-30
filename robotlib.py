@@ -91,6 +91,6 @@ class SerialArduino:
         ser = serial.Serial('/dev/serial0', 9600, timeout=1)
         msg = ""
         while not self.pattern.search(msg):
-            msg = str(self.ser.readline())
+            msg = str(ser.readline())
         print(msg)
         del ser
