@@ -1,16 +1,25 @@
 from robotlib import Robot, SerialArduino
 import time
 
+import threading
 
 robot = Robot()
 dist = SerialArduino()
 
-#for i in range(1,30):
-#    robot.avance(1)
-#    dist.readline()
+class Thread_Distance(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
 
-dist.readline()
-#robot.avance(30)
+    def run(self):
+        global dist
+        dist.obstacle()
+
+
+arduino = Thread_Distance()
+arduino.start()
+
+arduino.join()
+
 for i in range(1,50):
-    dist.readline()
-    time.sleep(0.100)
+    robot.avance(1)
+    print("Middle ", dist.middle, " left ", dist.left, " right ", dist.right)
