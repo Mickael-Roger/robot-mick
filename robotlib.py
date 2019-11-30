@@ -35,8 +35,8 @@ class Robot:
         GPIO.output(self.in2,GPIO.LOW)
         GPIO.output(self.in4,GPIO.LOW)
 
-        self.p=GPIO.PWM(ena,1000)
-        self.q=GPIO.PWM(enb,1000)
+        self.p=GPIO.PWM(self.ena,1000)
+        self.q=GPIO.PWM(self.enb,1000)
         self.p.start(25)
         self.q.start(25)
 
