@@ -26,7 +26,7 @@ def start():
     GPIO.setup(in3,GPIO.OUT)
     GPIO.setup(in2,GPIO.OUT)
     GPIO.setup(in4,GPIO.OUT)
-    GPIO.setup(en,GPIO.OUT)
+    GPIO.setup(ena,GPIO.OUT)
     GPIO.setup(enb,GPIO.OUT)
     GPIO.output(in1,GPIO.LOW)
     GPIO.output(in3,GPIO.LOW)
@@ -48,7 +48,7 @@ def avance(nb):
     
 start()
 
-p=GPIO.PWM(en,1000)
+p=GPIO.PWM(ena,1000)
 q=GPIO.PWM(enb,1000)
 p.start(25)
 q.start(25)
