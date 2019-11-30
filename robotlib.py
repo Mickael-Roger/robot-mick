@@ -1,6 +1,10 @@
 import RPi.GPIO as GPIO
 from time import sleep, time
 
+import serial
+import re
+
+
 
 class Robot:
 
@@ -76,3 +80,16 @@ class Robot:
         GPIO.output(self.in2,GPIO.HIGH)
         sleep(0.0085 * nb)
         self.stop()    
+
+
+class SerialArduino:
+
+    def __init__(self):
+        self.ser = serial.Serial('/dev/serial0', 9600, timeout=1)
+        self.pattern = re.compile("^\d+;\d+;\d+")
+
+    def readline(self):
+        msg = ""
+        while not self.pattern.match(msg):
+            msg = self.ser.readline()
+        print(msg)
