@@ -94,4 +94,3 @@ class SerialArduino:
         while not self.pattern.search(msg):
             msg = str(self.ser.readline())
         print(msg)
-        del ser
