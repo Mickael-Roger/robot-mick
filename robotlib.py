@@ -94,6 +94,7 @@ class SerialArduino:
             msg = str(self.ser.readline())
             position = self.pattern.search(msg)
             if position:
-                print(msg[position.start():position.end()])
-
+                #print(msg[position.start():position.end()])
+                middle, left, right = re.split(';', msg[position.start():position.end()])
+                print("Middle ", middle, " left ", left, " right ", right)
 
