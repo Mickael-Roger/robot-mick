@@ -87,6 +87,9 @@ class SerialArduino:
     def __init__(self):
         self.pattern = re.compile("\d+;\d+;\d+")
         self.ser = serial.Serial('/dev/serial0', 9600, timeout=1)
+        self.middle = 0
+        self.left = 0
+        self.right = 0
 
     def obstacle(self):
         self.ser.reset_input_buffer()
@@ -95,6 +98,9 @@ class SerialArduino:
             position = self.pattern.search(msg)
             if position:
                 #print(msg[position.start():position.end()])
-                middle, left, right = re.split(';', msg[position.start():position.end()])
-                print("Middle ", middle, " left ", left, " right ", right)
+                m, l, r = re.split(';', msg[position.start():position.end()])
+                self.middle = int(m) - 3
+                self.left = int(l)
+                self.right = int (r)
+                print("Middle ", m, " left ", l, " right ", r)
 
