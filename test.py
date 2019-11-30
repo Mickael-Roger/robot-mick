@@ -28,7 +28,7 @@ class Thread_Avance(threading.Thread):
                 if dist.middle < 20 or dist.left < 20 or dist.right < 20:
                     robot.recule(2)
                     robot.droite(90)
-         except KeyboardInterrupt:
+        except KeyboardInterrupt:
              robot.stop()
 
 
