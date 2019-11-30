@@ -27,7 +27,10 @@ class Thread_Avance(threading.Thread):
             print("Middle ", dist.middle, " left ", dist.left, " right ", dist.right)
             if dist.middle < 20 or dist.left < 20 or dist.right < 20:
                 robot.recule(2)
-                robot.droite(90)
+                if dist.left > dist.right:
+                    robot.left(30)
+                if dist.right > dist.left:
+                    robot.droite(30)
 
 
 try:
