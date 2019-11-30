@@ -26,11 +26,12 @@ class Thread_Avance(threading.Thread):
             robot.avance(1)
             print("Middle ", dist.middle, " left ", dist.left, " right ", dist.right)
             if dist.middle < 20 or dist.left < 20 or dist.right < 20:
-                robot.recule(2)
-                if dist.left > dist.right:
-                    robot.gauche(30)
-                if dist.right > dist.left:
-                    robot.droite(30)
+                if (dist.left < 25 and dist.right < 25):
+                    robot.droite(60) # Mur
+                elif dist.left < 25 and dist.right > 25:
+                        robot.droite(30) # Obstacle on left
+                elif dist.right < 25 and dist.left > 25:
+                        robot.left(30)
 
 
 try:
