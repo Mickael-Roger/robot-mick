@@ -25,8 +25,8 @@ class Thread_Avance(threading.Thread):
             while True:
                 robot.avance(1)
                 print("Middle ", dist.middle, " left ", dist.left, " right ", dist.right)
-                if dist.middle < 30:
-                    robot.recule(5)
+                if dist.middle < 20 or dist.left < 20 or dist.right < 20:
+                    robot.recule(2)
                     robot.droite(90)
          except KeyboardInterrupt:
              robot.stop()
