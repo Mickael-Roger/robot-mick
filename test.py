@@ -1,4 +1,4 @@
-import robotlib
+from robotlib import Robot
 
 
 robot = Robot()
