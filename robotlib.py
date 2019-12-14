@@ -41,8 +41,8 @@ class Robot:
 
         self.p=GPIO.PWM(self.ena,1000)
         self.q=GPIO.PWM(self.enb,1000)
-        self.p.start(25)
-        self.q.start(25)
+        self.p.start(100)
+        self.q.start(100)
 
         self.p.ChangeDutyCycle(100)
         self.q.ChangeDutyCycle(100)
