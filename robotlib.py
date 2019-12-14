@@ -2,7 +2,9 @@ import RPi.GPIO as GPIO
 from time import sleep, time
 
 import serial
-import re
+import sys
+
+import json
 
 
 
@@ -85,21 +87,26 @@ class Robot:
 class SerialArduino:
 
     def __init__(self):
-        self.pattern = re.compile("\d+;\d+;\d+")
+#        self.pattern = re.compile("\d+;\d+;\d+")
         self.ser = serial.Serial('/dev/serial0', 9600, timeout=1)
         self.middle = 0
         self.left = 0
         self.right = 0
 
     def obstacle(self):
+
         self.ser.reset_input_buffer()
+
         while True:
-            msg = str(self.ser.readline())
-            position = self.pattern.search(msg)
-            if position:
-                #print(msg[position.start():position.end()])
-                m, l, r = re.split(';', msg[position.start():position.end()])
-                self.middle = int(m) - 3
-                self.left = int(l)
-                self.right = int (r)
+            msg = str(self.ser.readline().decode("utf-8")).rstrip()
+            try:
+                response = json.loads(msg)
+                self.middle = int(response["middle"]) - 3
+                self.left = int(response["left"])
+                self.right = int (response["right"])
+            except:
+                print("Error", sys.exc_info()[0])
+                pass
+            
+                
 
