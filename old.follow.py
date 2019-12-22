@@ -56,7 +56,7 @@ class Thread_identification(threading.Thread):
         global lock
         global PersonID
 
-        with Popen(["./darknet", "detector", "demo", "coco.data", "yolov3-tiny.cfg", "yolov3-tiny.weights"], stdout=PIPE) as proc:
+        with Popen(["./darknet", "detector", "demo", "data/coco.data", "data/yolov3-tiny.cfg", "data/yolov3-tiny.weights"], stdout=PIPE) as proc:
             for line in io.TextIOWrapper(proc.stdout, encoding="utf-8"):
                 response = json.loads(line)
                 if response["category"] == "person":
