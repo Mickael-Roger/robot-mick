@@ -38,7 +38,7 @@ class Thread_Avance(threading.Thread):
                 elif dist.left < 25 and dist.right > 25:
                         robot.droite(30) # Obstacle on left
                 elif dist.right < 25 and dist.left > 25:
-                        robot.gauche(30)
+                        robot.gauche(30) # Obstacle on right
 
 
 try:
