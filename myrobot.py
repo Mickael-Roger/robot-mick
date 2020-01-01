@@ -6,6 +6,8 @@ import json
 
 robot = Robot()
 
+print("Press Ctrl C to stop the Robot")
+
 try:
     while True:
         left, middle, right = robot.arduino.obstacle()
