@@ -151,15 +151,15 @@ class Robot:
             results = []
 
             if self.cap.isOpened():
-                cv.imwrite("./tmp/frame%d.jpg" % self.capid, self.frame)
+                cv.imwrite("/tmp/frame%d.jpg" % self.capid, self.frame)
                 # Send request 
-                msg_file = str(self.capid) + ";./tmp/frame" + str(self.capid) + ".jpg\0"
+                msg_file = str(self.capid) + ";/tmp/frame" + str(self.capid) + ".jpg\0"
                 self.sendmq.send(msg_file, True, type=1)
 
                 # Wait for identification
                 message = self.reicvmq.receive()
 
-                os.remove("./tmp/frame" + str(self.capid) + ".jpg") 
+                os.remove("/tmp/frame" + str(self.capid) + ".jpg") 
 
                 # Extract json from message
                 
@@ -357,7 +357,6 @@ class Robot:
                     self.right = int (response["right"])
                     lock.release()
                 except:
-                    print("Error", sys.exc_info()[0])
                     pass
                 
                 sleep(0.05)    
