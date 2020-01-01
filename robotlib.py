@@ -129,7 +129,11 @@ class Robot:
             if self.cap.isOpened():
                 
                 self.capid = 0
-                # Start message queue
+                # Start message queue; Destroy it then recreate it
+                self.sendmq = sysv_ipc.MessageQueue(2468, sysv_ipc.IPC_CREAT)
+                self.reicvmq = sysv_ipc.MessageQueue(1357, sysv_ipc.IPC_CREAT)
+                self.sendmq.remove()
+                self.reicvmq.remove()
                 self.sendmq = sysv_ipc.MessageQueue(2468, sysv_ipc.IPC_CREAT)
                 self.reicvmq = sysv_ipc.MessageQueue(1357, sysv_ipc.IPC_CREAT)
 
