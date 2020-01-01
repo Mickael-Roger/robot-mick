@@ -1,7 +1,13 @@
 import RPi.GPIO as GPIO
 from time import sleep, time
 
+import cv2 as cv
+import sysv_ipc
+
 import serial
+import threading
+from subprocess import Popen
+import os
 import sys
 
 import json
@@ -10,6 +16,9 @@ import math
 import smbus
 
 
+
+lock = threading.Lock()
+stop = 0
 
 
 class Robot:
@@ -27,6 +36,17 @@ class Robot:
     gyromap = (0, 135, 400, 750, 1075, 1450, 1850, 2150, 2550, 2900, 3250, 3675, 4100, 4375, 4700, 5150, 5550, 5850, 6200, 6600, 7050, 7400, 7700, 7950, 8500)
 
     def __del__(self):
+        global stop
+
+        if self.camera.cap.isOpened():
+            self.darknet.kill()
+            self.camera.reicvmq.send("", True, type=1)
+            self.camera.sendmq.remove()
+            self.camera.reicvmq.remove()
+        
+        stop = 1
+        self.arduino.join()
+        self.camera.join()
         GPIO.cleanup()
 
 
@@ -82,7 +102,84 @@ class Robot:
 
         # Wait for MPU6050 stabilization
         sleep(3)
+
+        # Arduino board
+        self.arduino = self.Arduino()
+        self.arduino.start()
+
+        # Camera
+        self.camera = self.Camera()
+        self.camera.start()
+
+        # Initialise darknet
+        if self.camera.cap.isOpened():
+            self.darknet = Popen(["./darknet-robot"])
+            # Wait for darknet to start
+            sleep(5)
+
+
+    class Camera(threading.Thread):
+
+        def __init__(self):
+            threading.Thread.__init__(self)
+
+            # Start opencv Video camera
+            self.cap = cv.VideoCapture(0)
+            
+            if self.cap.isOpened():
+                
+                self.capid = 0
+                # Start message queue
+                self.sendmq = sysv_ipc.MessageQueue(2468, sysv_ipc.IPC_CREAT)
+                self.reicvmq = sysv_ipc.MessageQueue(1357, sysv_ipc.IPC_CREAT)
+
+                # Frame
+                self.frame = None
+
+
+        def run(self):
+            global stop
+
+            if self.cap.isOpened():
+                while stop == 0:
+                    ret, myframe = self.cap.read()
+                    if ret:
+                        self.frame = myframe
         
+
+        def identify(self):
+            results = []
+
+            if self.cap.isOpened():
+                cv.imwrite("./tmp/frame%d.jpg" % self.capid, self.frame)
+                # Send request 
+                msg_file = str(self.capid) + ";./tmp/frame" + str(self.capid) + ".jpg\0"
+                self.sendmq.send(msg_file, True, type=1)
+
+                # Wait for identification
+                message = self.reicvmq.receive()
+
+                os.remove("./tmp/frame" + str(self.capid) + ".jpg") 
+
+                # Extract json from message
+                
+                jsonidx = message[0].find(b'\x00')
+                if jsonidx == 0:
+                    jsonmsg = ""
+                else:
+                    jsonmsg = message[0][:jsonidx].decode("utf-8")
+
+
+                try:
+                    for response in jsonmsg.split(';'):
+                        result = json.loads(response)
+                        results.append(result) 
+                except:
+                    pass
+
+            return results
+
+
 
     def read_mpu6050_data(self, addr):
         high = self.bus.read_byte_data(self.Device_Address, addr)
@@ -226,29 +323,42 @@ class Robot:
         self.position['y'] = self.position['y'] + y
 
 
+    class Arduino(threading.Thread):
 
-class SerialArduino:
+        def __init__(self):
+            threading.Thread.__init__(self)
+            self.ser = serial.Serial('/dev/serial0', 9600, timeout=1)
+            self.middle = 99
+            self.left = 99
+            self.right = 99
 
-    def __init__(self):
-#        self.pattern = re.compile("\d+;\d+;\d+")
-        self.ser = serial.Serial('/dev/serial0', 9600, timeout=1)
-        self.middle = 99
-        self.left = 99
-        self.right = 99
+            self.ser.reset_input_buffer()
 
-        self.ser.reset_input_buffer()
+        def obstacle(self):
+            lock.acquire()
+            left = self.left
+            middle = self.middle
+            right = self.right
+            lock.release()
 
-    def obstacle(self):
+            return left, middle, right
 
-        msg = str(self.ser.readline().decode("utf-8")).rstrip()
-        try:
-            response = json.loads(msg)
-            self.middle = int(response["middle"]) - 3
-            self.left = int(response["left"])
-            self.right = int (response["right"])
-        except:
-            print("Error", sys.exc_info()[0])
-            pass
-            
+        def run(self):
+            global lock
+            global stop
+
+            while stop == 0:
+                msg = str(self.ser.readline().decode("utf-8")).rstrip()
+                try:
+                    response = json.loads(msg)
+                    lock.acquire()
+                    self.middle = int(response["middle"]) - 3
+                    self.left = int(response["left"])
+                    self.right = int (response["right"])
+                    lock.release()
+                except:
+                    print("Error", sys.exc_info()[0])
+                    pass
                 
+                sleep(0.05)    
 

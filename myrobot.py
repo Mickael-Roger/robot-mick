@@ -1,56 +1,21 @@
-from robotlib import Robot, SerialArduino
+from robotlib import Robot
 import time
 
-import threading
+import json
+
 
 robot = Robot()
-dist = SerialArduino()
-lock = threading.Lock()
-stop = 0
-
-class Thread_Distance(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-
-    def run(self):
-        global dist
-        global lock
-        dist.obstacle()
-
-class Thread_Avance(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-
-    def run(self):
-        global dist
-        global robot
-        while stop == 0:
-            robot.avance(1)
-            if dist.middle < 20 or dist.left < 20 or dist.right < 20:
-                if dist.right < 3:
-                    robot.recule(5)
-                    robot.gauche(90)
-                elif dist.left < 3:
-                    robot.recule(5)
-                    robot.droite(90)
-                elif (dist.left < 25 and dist.right < 25):
-                    robot.droite(60) # Mur
-                elif dist.left < 25 and dist.right > 25:
-                        robot.droite(30) # Obstacle on left
-                elif dist.right < 25 and dist.left > 25:
-                        robot.gauche(30) # Obstacle on right
-
 
 try:
-    arduino = Thread_Distance()
-    bot = Thread_Avance()
+    while True:
+        left, middle, right = robot.arduino.obstacle()
+        print(left, middle, right)
+        for elem in robot.camera.identify():
+            print ("Found : ", elem["category"])
 
-    arduino.start()
-    time.sleep(0.1)
-    bot.start()
-
-    bot.join()
-    arduino.join()
+        time.sleep(3)
 
 except KeyboardInterrupt:
-    stop=1
+    del robot
+
+
