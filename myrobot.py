@@ -3,11 +3,11 @@ import time
 
 import json
 
-print("Robot is starting ... ", end = '')
+print("Robot is starting ... ", end = '', flush=True)
 
 robot = Robot()
 
-print ("done. Press Ctrl C to stop the Robot")
+print ("done. Press Ctrl C to stop the Robot", flush=True)
 
 try:
     while True:

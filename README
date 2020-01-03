@@ -1,1 +1,8 @@
-# TODO
+# Installation
+
+1/ (Optional) Rebuild darknet-nnpack
+2/ Copy library
+```
+sudo cp -rf lib/* /usr/lib
+```
+
